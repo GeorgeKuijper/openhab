@@ -1,14 +1,15 @@
 services:
   openhab:
-    image: "openhab/openhab:latest"
+    container_name: "openhab"
+    image: "openhab/openhab:latest-alpine"
     restart: always
     network_mode: host
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "/etc/timezone:/etc/timezone:ro"
-      - "./openhab_addons:/openhab/addons"
-      - "./openhab_conf:/openhab/conf"
-      - "./openhab_userdata:/openhab/userdata"
+      - "/opt/openhab/openhab_addons:/openhab/addons"
+      - "/opt/openhab/openhab_conf:/openhab/conf"
+      - "/opt/openhab/openhab_userdata:/openhab/userdata"
     environment:
       CRYPTO_POLICY: "unlimited"
       EXTRA_JAVA_OPTS: "-Duser.timezone=Europe/Amsterdam"
