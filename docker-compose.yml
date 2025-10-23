@@ -1,17 +1,41 @@
+#
 services:
   openhab:
     container_name: "openhab"
-    image: "openhab/openhab:latest-alpine"
+    image: "openhab/openhab:5.0.1"
     restart: always
     network_mode: host
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "/etc/timezone:/etc/timezone:ro"
-      - "/opt/openhab/openhab_addons:/openhab/addons"
-      - "/opt/openhab/openhab_conf:/openhab/conf"
-      - "/opt/openhab/openhab_userdata:/openhab/userdata"
+      - "openhab-addons:/openhab/addons"
+      - "openhab-conf:/openhab/conf"
+      - "openhab-userdata:/openhab/userdata"
     environment:
       CRYPTO_POLICY: "unlimited"
       EXTRA_JAVA_OPTS: "-Duser.timezone=Europe/Amsterdam"
       OPENHAB_HTTP_PORT: "8080"
       OPENHAB_HTTPS_PORT: "8443"
+
+volumes:
+  openhab-addons:
+    name: openhab-addons
+    driver: local
+    driver_opts:
+      type: "nfs"
+      device: ":/mnt/HDD-Pool/Dataset_for_intranet/openhab-addons"
+      o: "addr=192.168.1.131,rw,noatime,rsize=8192,wsize=8192,tcp,timeo=14,nfsvers=4"
+  openhab-conf:
+    name: openhab-conf
+    driver: local
+    driver_opts:
+      type: "nfs"
+      device: ":/mnt/HDD-Pool/Dataset_for_intranet/openhab-conf"
+      o: "addr=192.168.1.131,rw,noatime,rsize=8192,wsize=8192,tcp,timeo=14,nfsvers=4"
+  openhab-userdata:
+    name: openhab-userdata
+    driver: local
+    driver_opts:
+      type: "nfs"
+      device: ":/mnt/HDD-Pool/Dataset_for_intranet/openhab-userdata"
+      o: "addr=192.168.1.131,rw,noatime,rsize=8192,wsize=8192,tcp,timeo=14,nfsvers=4"
